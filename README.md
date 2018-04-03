@@ -4,13 +4,13 @@
 This project is a Brainfuck interpreter written in C.
 
 ## Compile
-````bash
+```bash
 $ export CFLAGS="-Wall -Wextra -Werror"
 $ make brainfuck-interpreter
 ```
 
 ## Execute
-````bash
+```bash
 $ ./brainfuck-interpreter -f hello.bf
 Hello World!
 ```
