@@ -62,6 +62,8 @@ int main(int argc, char **argv)
     if (!fread(buffer, fsize, 1, fd))
         handle_error("fread");
 
+    fclose(fd);
+
     interpret(buffer, fsize);
 
     return (EXIT_SUCCESS);
@@ -69,6 +71,49 @@ int main(int argc, char **argv)
 
 void interpret(char *buffer, size_t buflen)
 {
+    unsigned char t[BF_MAX];
+    size_t i;
+    unsigned char *ptr;
+
+    bzero(t, BF_MAX);
+
+    ptr = t;
+
+    for (i = 0; i < buflen; ++i) {
+        switch (buffer[i]) {
+            case '>':
+                ptr++;
+                break;
+            case '<':
+                ptr--;
+                break;
+            case '+':
+                ++(*ptr);
+                break;
+            case '-':
+                --(*ptr);
+                break;
+            case '.':
+                putchar(*ptr);
+                break;
+            case ',':
+                (*ptr) = getchar();
+                break;
+            case '[':
+                if (!*ptr)
+                    while (buffer[i++] != ']');
+
+                break;
+            case ']':
+                if (*ptr) 
+                    while (buffer[i++] != '[');
+
+                break;
+            default:
+                fprintf(stderr, "unhandled instruction %c\n", buffer[i]);
+                exit(EXIT_FAILURE);
+        }
+    }
 
     return;
 }
