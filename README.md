@@ -9,7 +9,7 @@ $ export CFLAGS="-Wall -Wextra -Werror"
 $ make brainfuck-interpreter
 ```
 
-## Execute
+## Run
 ```bash
 $ ./brainfuck-interpreter -f hello.bf
 Hello World!
