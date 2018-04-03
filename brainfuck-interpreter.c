@@ -3,8 +3,6 @@
 #include <unistd.h>
 #include <strings.h>
 
-#define BF_MAX 30000
-
 #define handle_error(e) do { perror(e); exit(EXIT_FAILURE); } while (0)
 
 void interpret(char *buffer, size_t buflen);
@@ -71,15 +69,19 @@ int main(int argc, char **argv)
 
 void interpret(char *buffer, size_t buflen)
 {
-    unsigned char t[BF_MAX];
+    unsigned char *t;
     size_t i;
     unsigned char *ptr;
 
-    bzero(t, BF_MAX);
+    t = (unsigned char *) malloc(buflen * sizeof(unsigned char));
+    if (t == NULL)
+        handle_error("malloc");
+
+    bzero(t, buflen);
 
     ptr = t;
 
-    for (i = 0; i < buflen; ++i) {
+    for (i = 0; i < (buflen - 1) && buffer[i] != 0; ++i) {
         switch (buffer[i]) {
             case '>':
                 ptr++;
@@ -106,7 +108,7 @@ void interpret(char *buffer, size_t buflen)
                 break;
             case ']':
                 if (*ptr) 
-                    while (buffer[i++] != '[');
+                    while (buffer[i--] != '[');
 
                 break;
             default:
@@ -114,7 +116,5 @@ void interpret(char *buffer, size_t buflen)
                 exit(EXIT_FAILURE);
         }
     }
-
-    return;
 }
 
