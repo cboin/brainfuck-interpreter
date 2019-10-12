@@ -16,7 +16,7 @@ static void usage(void)
 int main(int argc, char **argv)
 {
     int ch;
-    FILE *fd;
+    FILE *fd = NULL;
     size_t fsize;
     char *buffer;
 
@@ -37,6 +37,8 @@ int main(int argc, char **argv)
                 usage();
         }
     }
+    if (fd == NULL)
+	    usage();
 
     /* Get file size. */
     if (fseek(fd, 0L, SEEK_END) != 0)
